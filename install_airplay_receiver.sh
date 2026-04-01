@@ -209,6 +209,7 @@ chmod 755 "${STARTER}" "${STOPPER}" "${STATUS}"
 
 systemctl daemon-reload
 systemctl enable avahi-daemon >/dev/null 2>&1 || true
+systemctl enable "${SERVICE_NAME}.service"
 systemctl restart avahi-daemon
 
 echo
@@ -224,10 +225,11 @@ echo "  - ${STARTER}"
 echo "  - ${STOPPER}"
 echo "  - ${STATUS}"
 echo
-echo "The AirPlay receiver is installed ON-DEMAND and is NOT auto-started at boot."
+echo "The AirPlay receiver is installed ON-DEMAND and auto-starts at boot."
 echo
 echo "To start it when needed:"
 echo "  airplay-on"
+echo "  (it is also enabled to start automatically on boot)"
 echo
 echo "To stop it:"
 echo "  airplay-off"
