@@ -159,7 +159,12 @@ mkdir -p "$(dirname "${LOG_FILE}")"
   echo "Extra options: ${EXTRA_OPTS}"
 } >> "${LOG_FILE}"
 
-exec uxplay "${OPTS[@]}" >> "${LOG_FILE}" 2>&1
+if command -v systemd-cat >/dev/null 2>&1; then
+  uxplay "${OPTS[@]}" 2>&1 | tee -a "${LOG_FILE}" | systemd-cat -t airplay-receiver
+  exit $?
+else
+  exec uxplay "${OPTS[@]}" >> "${LOG_FILE}" 2>&1
+fi
 EOF
 
 chmod 755 "${RUNNER}"
